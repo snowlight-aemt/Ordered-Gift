@@ -8,14 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class GiftServiceImplTest {
     @Autowired
     private GiftService giftService;
-    @Autowired
-    private GiftRepository giftRepository;
 
     @DisplayName("선물 등록")
     @Test
@@ -27,16 +23,15 @@ class GiftServiceImplTest {
         Gift.PushType pushType = Gift.PushType.KAKAO;
         String giftMessage = "message";
 
-        GiftCommand.RegisterGift command = GiftCommand.RegisterGift.builder()
+        GiftCommand.RegisterOrder command = GiftCommand.RegisterOrder.builder()
                 .buyerUserId(userId)
                 .giftReceiverName(receiverName)
                 .giftReceiverPhone(receiverPhone)
                 .giftMessage(giftMessage)
                 .pushType(pushType)
-                .orderToken(orderToken)
                 .build();
 
-        GiftInfo.Main sut = giftService.registerGift(command);
+        GiftInfo.Main sut = giftService.registerOrder(command);
 
         Assertions.assertThat(sut.getGiftReceiverName()).isEqualTo(receiverName);
         Assertions.assertThat(sut.getGiftReceiverPhone()).isEqualTo(receiverPhone);

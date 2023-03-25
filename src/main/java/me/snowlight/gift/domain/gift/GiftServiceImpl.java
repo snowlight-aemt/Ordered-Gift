@@ -1,23 +1,19 @@
 package me.snowlight.gift.domain.gift;
 
 import lombok.RequiredArgsConstructor;
+import me.snowlight.gift.domain.gift.order.OrderApiCaller;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class GiftServiceImpl implements GiftService {
     private final GiftStore giftStore;
+    private final OrderApiCaller orderApiCaller;
+    private final GiftCommandMapper giftCommandMapper;
 
-    public GiftInfo.Main registerGift(GiftCommand.RegisterGift command) {
-        Gift gift = this.giftStore.store(command.toEntity());
-
-        return GiftInfo.Main.builder()
-                .orderToken(gift.getOrderToken())
-                .giftToken(gift.getGiftToken())
-                .pushType(gift.getPushType())
-                .giftReceiverName(gift.getGiftReceiverName())
-                .giftReceiverPhone(gift.getGiftReceiverPhone())
-                .giftMessage(gift.getGiftMessage())
-                .build();
+    public GiftInfo.Main registerOrder(GiftCommand.RegisterOrder command) {
+        String orderToken = orderApiCaller.registerGiftOrder(giftCommandMapper.of(command));
+        Gift gift = this.giftStore.store(command.toEntity(orderToken));
+        return new GiftInfo.Main(gift);
     }
 }

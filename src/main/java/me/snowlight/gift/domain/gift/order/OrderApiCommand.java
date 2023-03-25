@@ -1,36 +1,20 @@
-package me.snowlight.gift.domain.gift;
+package me.snowlight.gift.domain.gift.order;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.List;
 
-@NoArgsConstructor
-public class GiftCommand {
+public class OrderApiCommand {
+
     @Getter
     @Builder
     @ToString
     public static class RegisterOrder {
         private final Long buyerUserId;
-        private final String giftReceiverName;
-        private final String giftReceiverPhone;
-        private final String giftMessage;
-        private final Gift.PushType pushType;
         private final String payMethod;
         private final List<RegisterOrderItem> orderItems;
-
-        public Gift toEntity(String orderToken) {
-            return Gift.builder()
-                    .buyerUserId(this.buyerUserId)
-                    .orderToken(orderToken)
-                    .giftReceiverName(this.giftReceiverName)
-                    .giftReceiverPhone(this.giftReceiverPhone)
-                    .giftMessage(this.giftMessage)
-                    .pushType(this.pushType)
-                    .build();
-        }
     }
 
     @Getter
@@ -62,3 +46,4 @@ public class GiftCommand {
         private final Long itemOptionPrice;
     }
 }
+

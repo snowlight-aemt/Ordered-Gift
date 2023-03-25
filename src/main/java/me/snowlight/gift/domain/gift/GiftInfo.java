@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 public class GiftInfo {
-
     @Getter
-    @Builder
     @ToString
     public static class Main {
         private final String orderToken;
@@ -16,5 +14,14 @@ public class GiftInfo {
         private final String giftReceiverName;
         private final String giftReceiverPhone;
         private final String giftMessage;
+
+        public Main(Gift gift) {
+            this.orderToken = gift.getOrderToken();
+            this.giftToken = gift.getGiftToken();
+            this.pushType = gift.getPushType();
+            this.giftReceiverName = gift.getGiftReceiverName();
+            this.giftReceiverPhone = gift.getGiftReceiverPhone();
+            this.giftMessage = gift.getGiftMessage();
+        }
     }
 }

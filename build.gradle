@@ -27,6 +27,9 @@ dependencies {
 
     implementation 'org.apache.commons:commons-lang3:3.9'
 
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
     implementation 'org.mapstruct:mapstruct:1.4.2.Final'
     annotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
 
@@ -34,11 +37,9 @@ dependencies {
     implementation platform('software.amazon.awssdk:bom:2.20.26')
     implementation 'org.springframework.cloud:spring-cloud-aws-messaging:2.2.6.RELEASE'
 
-    compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
-    annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
