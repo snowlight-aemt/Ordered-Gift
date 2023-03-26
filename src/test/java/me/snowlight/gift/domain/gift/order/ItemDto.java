@@ -1,5 +1,6 @@
 package me.snowlight.gift.domain.gift.order;
 
+import lombok.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 
@@ -69,5 +70,14 @@ public class ItemDto {
         public Long getItemOptionPrice() {
             return itemOptionPrice;
         }
+    }
+
+    @Getter
+    @Setter
+    @ToString
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ChangeStatusItemRequest {
+        private String itemToken;
     }
 }

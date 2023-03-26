@@ -63,4 +63,16 @@ public class TestSpecificLanguage {
         CommonResponse<Map<String, String>> partnerResponse = objectMapper.readValue(partnerRegisterResponseEntity.getBody(), CommonResponse.class);
         return partnerResponse.getData().get("partnerToken");
     }
+
+    public void requestChangedItemStatusOnSales(String itemToken) throws JsonProcessingException {
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(MediaType.APPLICATION_JSON);
+
+        ItemDto.ChangeStatusItemRequest statusItemRequest = new ItemDto.ChangeStatusItemRequest();
+        statusItemRequest.setItemToken(itemToken);
+
+        HttpEntity<String> partnerEntity = new HttpEntity<>(this.objectMapper.writeValueAsString(statusItemRequest), header);
+
+        restTemplate.exchange(ITEM_REQUEST_URL + "/change-on-sales", HttpMethod.POST, partnerEntity, String.class);
+    }
 }
