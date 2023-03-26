@@ -7,11 +7,11 @@ import java.util.List;
 
 public class ItemDto {
 
-    public static class ItemTest {
+    public static class Item {
         String partnerToken = RandomStringUtils.randomAlphanumeric(5);
         String itemName = RandomStringUtils.randomAlphanumeric(5);
         Long itemPrice = RandomUtils.nextLong(100000L, 200000000L);
-        List<ItemOptionGroup> itemOptionGroups = List.of(new ItemOptionGroup());
+        List<ItemOptionGroup> itemOptionGroupList = List.of(new ItemOptionGroup());
 
         public void setPartnerToken(String partnerToken) {
             this.partnerToken = partnerToken;
@@ -29,8 +29,8 @@ public class ItemDto {
             return itemPrice;
         }
 
-        public List<ItemOptionGroup> getItemOptionGroups() {
-            return itemOptionGroups;
+        public List<ItemOptionGroup> getItemOptionGroupList() {
+            return itemOptionGroupList;
         }
     }
 

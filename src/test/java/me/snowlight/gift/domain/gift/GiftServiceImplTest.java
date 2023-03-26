@@ -1,10 +1,12 @@
 package me.snowlight.gift.domain.gift;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.snowlight.gift.common.response.CommonResponse;
 import me.snowlight.gift.common.util.TokenGenerator;
 import me.snowlight.gift.domain.gift.order.ItemDto;
+import me.snowlight.gift.domain.gift.order.ItemInfo;
 import me.snowlight.gift.domain.gift.order.PartnerDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,20 +37,23 @@ class GiftServiceImplTest {
     void test() throws JsonProcessingException {
         String partnerToken = requestRegisterPartner();
         String itemToken = requestRegisterItem(partnerToken);
-        requestRetrieveItem(itemToken);
+        ItemInfo.Main itemInfo = requestRetrieveItem(itemToken);
     }
 
-    private void requestRetrieveItem(String itemToken) throws JsonProcessingException {
+    private ItemInfo.Main requestRetrieveItem(String itemToken) throws JsonProcessingException {
         ResponseEntity<String> itemRetrieveRequest = restTemplate.getForEntity(ITEM_REQUEST_URL + "/" + itemToken, String.class);
-        CommonResponse<Map<String, String>> itemRetrieveResponse = objectMapper.readValue(itemRetrieveRequest.getBody(), CommonResponse.class);
 
+        JavaType javaType = objectMapper.getTypeFactory().constructParametricType(CommonResponse.class, ItemInfo.Main.class);
+        CommonResponse<ItemInfo.Main> itemRetrieveResponse = objectMapper.readValue(itemRetrieveRequest.getBody(), javaType);
 
+        return itemRetrieveResponse.getData();
     }
 
     private String requestRegisterItem(String partnerToken) throws JsonProcessingException {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(MediaType.APPLICATION_JSON);
-        ItemDto.ItemTest item = new ItemDto.ItemTest();
+        ItemDto.Item item = new ItemDto.Item();
+
         item.setPartnerToken(partnerToken);
         HttpEntity<String> itemEntity = new HttpEntity<>(this.objectMapper.writeValueAsString(item), header);
         ResponseEntity<String> itemRegisterRequest = restTemplate.exchange(ITEM_REQUEST_URL,
