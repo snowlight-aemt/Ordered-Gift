@@ -68,13 +68,6 @@ public class Gift extends AbstractEntity {
 
         this.giftToken = TokenGenerator.randomCharacterWithPrefix(GIFT_PREFIX);
         this.status = Status.INIT;
-
-        this.receiverName = "TEMP_VALUE";
-        this.receiverPhone = "TEMP_VALUE";
-        this.receiverZipcode = "TEMP_VALUE";
-        this.receiverAddress1 = "TEMP_VALUE";
-        this.receiverAddress2 = "TEMP_VALUE";
-        this.etcMessage = "TEMP_VALUE";
     }
 
     @Getter
