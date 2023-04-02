@@ -1,5 +1,6 @@
 package me.snowlight.gift.domain.gift.order;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -11,6 +12,7 @@ public class OrderApiCommand {
     @Getter
     @Builder
     @ToString
+    @AllArgsConstructor
     public static class RegisterOrder {
         private final Long buyerUserId;
         private final String payMethod;
@@ -20,6 +22,7 @@ public class OrderApiCommand {
     @Getter
     @Builder
     @ToString
+    @AllArgsConstructor
     public static class RegisterOrderItem {
         private final String orderCount;
         private final String itemToken;
@@ -31,6 +34,7 @@ public class OrderApiCommand {
     @Getter
     @Builder
     @ToString
+    @AllArgsConstructor
     public static class RegisterOrderItemOptionGroup {
         private final Integer ordering;
         private final String itemOptionGroupName;
@@ -40,6 +44,7 @@ public class OrderApiCommand {
     @Getter
     @Builder
     @ToString
+    @AllArgsConstructor
     public static class RegisterOrderItemOption {
         private final Integer ordering;
         private final String itemOptionName;

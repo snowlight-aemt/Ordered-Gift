@@ -1,6 +1,5 @@
 package me.snowlight.gift.domain.gift;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +8,7 @@ import me.snowlight.gift.common.util.TokenGenerator;
 import me.snowlight.gift.domain.AbstractEntity;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.persistence.*;
 import java.time.ZonedDateTime;
 
 @Getter
@@ -68,6 +68,10 @@ public class Gift extends AbstractEntity {
 
         this.giftToken = TokenGenerator.randomCharacterWithPrefix(GIFT_PREFIX);
         this.status = Status.INIT;
+    }
+
+    public void completePayment() {
+        this.status = Status.ORDER_COMPLETE;
     }
 
     @Getter

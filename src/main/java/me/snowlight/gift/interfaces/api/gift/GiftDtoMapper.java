@@ -1,4 +1,4 @@
-package me.snowlight.gift.interfaces.gift;
+package me.snowlight.gift.interfaces.api.gift;
 
 import me.snowlight.gift.domain.gift.GiftCommand;
 import org.mapstruct.InjectionStrategy;

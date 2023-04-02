@@ -14,4 +14,8 @@ public class GiftFacade {
     public GiftInfo.Main registerOrder(GiftCommand.RegisterOrder command) {
         return this.giftService.registerOrder(command);
     }
+
+    public void completePayment(String orderToken) {
+        this.giftService.completePayment(orderToken);
+    }
 }

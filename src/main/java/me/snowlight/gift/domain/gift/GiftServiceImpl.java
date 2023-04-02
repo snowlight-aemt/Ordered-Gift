@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class GiftServiceImpl implements GiftService {
+    private final GiftReader giftReader;
     private final GiftStore giftStore;
     private final OrderApiCaller orderApiCaller;
     private final GiftCommandMapper giftCommandMapper;
@@ -15,5 +16,11 @@ public class GiftServiceImpl implements GiftService {
         String orderToken = orderApiCaller.registerGiftOrder(giftCommandMapper.of(command));
         Gift gift = this.giftStore.store(command.toEntity(orderToken));
         return new GiftInfo.Main(gift);
+    }
+
+    @Override
+    public void completePayment(String orderToken) {
+        Gift gift = this.giftReader.getGiftByOrderToken(orderToken);
+        gift.completePayment();
     }
 }

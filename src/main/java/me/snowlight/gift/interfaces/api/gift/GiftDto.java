@@ -1,4 +1,4 @@
-package me.snowlight.gift.interfaces.gift;
+package me.snowlight.gift.interfaces.api.gift;
 
 import lombok.Builder;
 import lombok.Getter;
