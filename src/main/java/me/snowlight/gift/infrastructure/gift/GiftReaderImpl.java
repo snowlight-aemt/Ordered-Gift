@@ -20,4 +20,11 @@ public class GiftReaderImpl implements GiftReader {
         return this.giftRepository.findByOrderToken(orderToken)
                                     .orElseThrow(EntityNotFoundException::new);
     }
+
+    @Override
+    public Gift getGiftByGiftToken(String giftToken) {
+        if (StringUtils.isEmpty(giftToken)) throw new InvalidParameterException();
+        return this.giftRepository.findByGiftToken(giftToken)
+                .orElseThrow(EntityNotFoundException::new);
+    }
 }

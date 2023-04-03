@@ -2,6 +2,7 @@ package me.snowlight.gift.domain.gift;
 
 import lombok.*;
 
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @NoArgsConstructor
@@ -17,6 +18,7 @@ public class GiftCommand {
         private final String giftMessage;
         private final Gift.PushType pushType;
         private final String payMethod;
+        @Size(min = 1)
         private final List<RegisterOrderItem> orderItems;
 
         public Gift toEntity(String orderToken) {

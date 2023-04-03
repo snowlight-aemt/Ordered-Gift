@@ -74,6 +74,10 @@ public class Gift extends AbstractEntity {
         this.status = Status.ORDER_COMPLETE;
     }
 
+    public void inPayment() {
+        this.status = Status.IN_PAYMENT;
+    }
+
     @Getter
     @AllArgsConstructor
     public enum Status {

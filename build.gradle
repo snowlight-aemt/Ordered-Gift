@@ -62,6 +62,8 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation("com.navercorp.fixturemonkey:fixture-monkey-starter:0.5.2")
+    testImplementation("com.navercorp.fixturemonkey:fixture-monkey-javax-validation:0.5.2")
 }
 
 dependencyManagement {
