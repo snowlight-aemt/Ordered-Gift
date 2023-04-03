@@ -1,28 +1,27 @@
-package me.snowlight.gift.domain.gift.order;
+package me.snowlight.gift.interfaces.api.gift;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.ToString;
+import me.snowlight.gift.domain.gift.Gift;
+import me.snowlight.gift.domain.gift.GiftInfo;
 
 import java.util.List;
 
-public class OrderApiCommand {
-
+public class GiftDto {
     @Getter
     @Builder
-    @ToString
-    @AllArgsConstructor
-    public static class RegisterOrder {
+    public static class RegisterGift {
         private final Long buyerUserId;
+        private final String giftReceiverName;
+        private final String giftReceiverPhone;
+        private final String giftMessage;
+        private final Gift.PushType pushType;
         private final String payMethod;
         private final List<RegisterOrderItem> orderItems;
     }
 
     @Getter
     @Builder
-    @ToString
-    @AllArgsConstructor
     public static class RegisterOrderItem {
         private final String orderCount;
         private final String itemToken;
@@ -33,8 +32,6 @@ public class OrderApiCommand {
 
     @Getter
     @Builder
-    @ToString
-    @AllArgsConstructor
     public static class RegisterOrderItemOptionGroup {
         private final Integer ordering;
         private final String itemOptionGroupName;
@@ -43,12 +40,20 @@ public class OrderApiCommand {
 
     @Getter
     @Builder
-    @ToString
-    @AllArgsConstructor
     public static class RegisterOrderItemOption {
         private final Integer ordering;
         private final String itemOptionName;
         private final Long itemOptionPrice;
     }
-}
 
+    @Getter
+    public static class RegisterResponse {
+        private final String orderToken;
+        private final String giftToken;
+
+        public RegisterResponse(GiftInfo.Main giftInfo) {
+            this.orderToken = giftInfo.getOrderToken();
+            this.giftToken = giftInfo.getGiftToken();
+        }
+    }
+}

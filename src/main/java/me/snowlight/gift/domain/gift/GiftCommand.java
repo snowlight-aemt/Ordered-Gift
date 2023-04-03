@@ -1,9 +1,6 @@
 package me.snowlight.gift.domain.gift;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
@@ -12,6 +9,7 @@ public class GiftCommand {
     @Getter
     @Builder
     @ToString
+    @AllArgsConstructor
     public static class RegisterOrder {
         private final Long buyerUserId;
         private final String giftReceiverName;
@@ -36,6 +34,7 @@ public class GiftCommand {
     @Getter
     @Builder
     @ToString
+    @AllArgsConstructor
     public static class RegisterOrderItem {
         private final String orderCount;
         private final String itemToken;
@@ -47,6 +46,7 @@ public class GiftCommand {
     @Getter
     @Builder
     @ToString
+    @AllArgsConstructor
     public static class RegisterOrderItemOptionGroup {
         private final Integer ordering;
         private final String itemOptionGroupName;
@@ -56,6 +56,7 @@ public class GiftCommand {
     @Getter
     @Builder
     @ToString
+    @AllArgsConstructor
     public static class RegisterOrderItemOption {
         private final Integer ordering;
         private final String itemOptionName;

@@ -12,7 +12,7 @@ import java.util.Optional;
 @Slf4j
 @Component
 public class RetrofitUtils {
-    public static <T extends CommonResponse> Optional<T> responseSync(Call<T> call) {
+    public <T extends CommonResponse> Optional<T> responseSync(Call<T> call) {
         try {
             Response<T> execute = call.execute();
             if (execute.isSuccessful()) {
