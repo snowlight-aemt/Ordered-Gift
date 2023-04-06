@@ -45,6 +45,9 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.4.2.Final'
     annotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
 
+    testImplementation 'org.mapstruct:mapstruct:1.4.2.Final'
+    testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
+
     // retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
@@ -62,6 +65,8 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation("com.navercorp.fixturemonkey:fixture-monkey-starter:0.5.2")
+    testImplementation("com.navercorp.fixturemonkey:fixture-monkey-javax-validation:0.5.2")
 }
 
 dependencyManagement {

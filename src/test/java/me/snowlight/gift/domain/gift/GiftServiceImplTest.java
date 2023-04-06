@@ -1,30 +1,41 @@
 package me.snowlight.gift.domain.gift;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import me.snowlight.gift.common.util.TokenGenerator;
-import me.snowlight.gift.domain.gift.order.ItemDto;
+import com.navercorp.fixturemonkey.FixtureMonkey;
+import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
+import com.navercorp.fixturemonkey.javax.validation.plugin.JavaxValidationPlugin;
 import me.snowlight.gift.domain.gift.order.ItemInfo;
+import me.snowlight.gift.domain.gift.order.OrderApiCaller;
+import me.snowlight.gift.domain.gift.order.OrderApiCommand;
 import me.snowlight.gift.util.TestSpecificLanguage;
+import net.jqwik.api.Arbitraries;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class GiftServiceImplTest {
     @Autowired
     private GiftService giftService;
+    @Autowired
+    private GiftReader giftReader;
 
     @Autowired
     TestSpecificLanguage testSpecificLanguage;
+    private final static FixtureMonkey fixtureMonkey = FixtureMonkey.builder()
+                                            .objectIntrospector(ConstructorPropertiesArbitraryIntrospector.INSTANCE)
+                                            .plugin(new JavaxValidationPlugin())
+                                            .build();
 
     @DisplayName("상품 등록")
     @Test
@@ -89,5 +100,27 @@ class GiftServiceImplTest {
         GiftInfo.Main sut = giftService.registerOrder(command);
 
         assertThat(sut.getOrderToken()).isNotEmpty();
+    }
+
+    @MockBean
+    public OrderApiCaller orderApiCaller;
+
+    @Test
+    void requestPaymentProcessing() {
+        Mockito.when(orderApiCaller.registerGiftOrder(ArgumentMatchers.any(OrderApiCommand.RegisterOrder.class)))
+                .thenReturn("test_111111111111111111111111");
+        GiftCommand.RegisterOrder registerOrder = fixtureMonkey.giveMeBuilder(GiftCommand.RegisterOrder.class)
+                .set("pushType", Gift.PushType.KAKAO)
+                .set("giftReceiverName", Arbitraries.strings().ofLength(5))
+                .set("giftReceiverPhone", Arbitraries.strings().ofLength(5))
+                .set("giftMessage", Arbitraries.strings().ofLength(5))
+                .set("buyerUserId", Arbitraries.longs().between(10, 20))
+                .sample();
+        GiftInfo.Main giftInfo = this.giftService.registerOrder(registerOrder);
+        this.giftService.requestPaymentProcessing(giftInfo.getGiftToken());
+
+        Gift sut = this.giftReader.getGiftByGiftToken(giftInfo.getGiftToken());
+
+        Assertions.assertThat(sut.getStatus()).isEqualTo(Gift.Status.IN_PAYMENT);
     }
 }

@@ -18,4 +18,8 @@ public class GiftFacade {
     public void completePayment(String orderToken) {
         this.giftService.completePayment(orderToken);
     }
+
+    public void requestPaymentProcessing(String giftToken) {
+        this.giftService.requestPaymentProcessing(giftToken);
+    }
 }

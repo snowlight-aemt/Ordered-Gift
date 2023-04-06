@@ -5,10 +5,7 @@ import me.snowlight.gift.application.gift.GiftFacade;
 import me.snowlight.gift.common.response.CommonResponse;
 import me.snowlight.gift.domain.gift.GiftCommand;
 import me.snowlight.gift.domain.gift.GiftInfo;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -24,6 +21,14 @@ public class GiftApiController {
         GiftCommand.RegisterOrder command = this.giftDtoMapper.of(giftDto);
         GiftInfo.Main giftInfo = giftFacade.registerOrder(command);
 
-        return CommonResponse.success(new GiftDto.RegisterResponse(giftInfo));
+        GiftDto.RegisterResponse response = new GiftDto.RegisterResponse(giftInfo);
+        return CommonResponse.success(response);
+    }
+
+    @PostMapping("/{giftToken}/payment-processing")
+    public CommonResponse paymentProcessing(@PathVariable String giftToken) {
+        this.giftFacade.requestPaymentProcessing(giftToken);
+
+        return CommonResponse.success("OK");
     }
 }

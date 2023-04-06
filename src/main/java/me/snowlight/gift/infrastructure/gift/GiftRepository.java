@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface GiftRepository extends JpaRepository<Gift, Long> {
 
     Optional<Gift> findByOrderToken(String orderToken);
+
+    Optional<Gift> findByGiftToken(String giftToken);
 }
