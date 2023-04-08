@@ -38,3 +38,6 @@ out/
 
 ### jqwik
 .jqwik-database
+
+### profiles
+application-aws.properties
