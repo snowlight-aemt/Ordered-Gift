@@ -1,6 +1,7 @@
 package me.snowlight.gift.interfaces.api.gift;
 
 import me.snowlight.gift.domain.gift.GiftCommand;
+import me.snowlight.gift.domain.gift.GiftInfo;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -14,4 +15,5 @@ public interface GiftDtoMapper {
     GiftCommand.RegisterOrderItem of (GiftDto.RegisterOrderItem request);
     GiftCommand.RegisterOrderItemOptionGroup of (GiftDto.RegisterOrderItemOptionGroup request);
     GiftCommand.RegisterOrderItemOption of(GiftDto.RegisterOrderItemOption request);
+    GiftDto.Main of (GiftInfo.Main request);
 }

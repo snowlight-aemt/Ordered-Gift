@@ -5,4 +5,6 @@ public interface GiftService {
 
     void completePayment(String orderToken);
     void requestPaymentProcessing(String giftToken);
+
+    public GiftInfo.Main retrieveOrder(String giftToken);
 }

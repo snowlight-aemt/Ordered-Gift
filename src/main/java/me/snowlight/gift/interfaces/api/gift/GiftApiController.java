@@ -16,6 +16,13 @@ public class GiftApiController {
     private final GiftFacade giftFacade;
     private final GiftDtoMapper giftDtoMapper;
 
+    @GetMapping("{giftToken}")
+    public CommonResponse retrieveOrder(@PathVariable String giftToken) {
+        GiftInfo.Main giftInfo = giftFacade.retrieveOrder(giftToken);
+        GiftDto.Main response = giftDtoMapper.of(giftInfo);
+        return CommonResponse.success(response);
+    }
+
     @PostMapping
     public CommonResponse registerGift(@RequestBody @Valid GiftDto.RegisterGift giftDto) {
         GiftCommand.RegisterOrder command = this.giftDtoMapper.of(giftDto);

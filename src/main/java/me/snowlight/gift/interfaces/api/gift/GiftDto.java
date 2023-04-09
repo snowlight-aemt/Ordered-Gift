@@ -81,6 +81,14 @@ public class GiftDto {
         }
     }
 
-    public class Payment {
+    @Getter
+    @Builder
+    public static class Main {
+        private final String orderToken;
+        private final String giftToken;
+        private final Gift.PushType pushType;
+        private final String giftReceiverName;
+        private final String giftReceiverPhone;
+        private final String giftMessage;
     }
 }
