@@ -91,4 +91,22 @@ public class GiftDto {
         private final String giftReceiverPhone;
         private final String giftMessage;
     }
+
+    @Getter
+    @Builder
+    public static class AcceptGiftReq {
+        @Min(0)
+        @NotNull
+        private String receiverName;
+        @NotEmpty
+        private String receiverPhone;
+        @NotEmpty
+        private String receiverZipcode;
+        @NotEmpty
+        private String receiverAddress1;
+        @NotEmpty
+        private String receiverAddress2;
+        @NotEmpty
+        private String etcMessage;
+    }
 }

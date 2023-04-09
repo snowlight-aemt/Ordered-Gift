@@ -26,4 +26,8 @@ public class GiftFacade {
     public GiftInfo.Main retrieveOrder(String giftToken) {
         return this.giftService.retrieveOrder(giftToken);
     }
+
+    public void requestAcceptGift(GiftCommand.Accept command) {
+        this.giftService.acceptGift(command);
+    }
 }

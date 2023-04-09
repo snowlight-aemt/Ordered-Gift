@@ -2,6 +2,7 @@ package me.snowlight.gift.infrastructure.gift.order;
 
 import lombok.RequiredArgsConstructor;
 import me.snowlight.gift.common.response.CommonResponse;
+import me.snowlight.gift.domain.gift.GiftCommand;
 import me.snowlight.gift.domain.gift.order.OrderApiCaller;
 import me.snowlight.gift.domain.gift.order.OrderApiCommand;
 import me.snowlight.gift.infrastructure.retrofit.RetrofitUtils;
@@ -22,5 +23,10 @@ public class OrderApiCallerImpl implements OrderApiCaller {
                 .map(CommonResponse::getData)
                 .map(RetrofitOrderApiResponse.Register::getOrderToken)
                 .orElseThrow(RuntimeException::new);
+    }
+
+    @Override
+    public void updateReceiverInfo(String orderToken, GiftCommand.Accept command) {
+
     }
 }

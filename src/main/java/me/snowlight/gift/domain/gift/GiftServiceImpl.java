@@ -35,9 +35,20 @@ public class GiftServiceImpl implements GiftService {
         gift.inPayment();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public GiftInfo.Main retrieveOrder(String giftToken) {
         Gift gift = this.giftReader.getGiftByGiftToken(giftToken);
         return new GiftInfo.Main(gift);
+    }
+
+    @Transactional
+    @Override
+    public void acceptGift(GiftCommand.Accept command) {
+        String giftToken = command.getGiftToken();
+        Gift gift = this.giftReader.getGiftByGiftToken(giftToken);
+        gift.accept(command);
+
+        this.orderApiCaller.updateReceiverInfo(gift.getOrderToken(), command);
     }
 }

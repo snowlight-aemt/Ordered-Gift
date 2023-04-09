@@ -78,6 +78,15 @@ public class Gift extends AbstractEntity {
         this.status = Status.IN_PAYMENT;
     }
 
+    public void accept(GiftCommand.Accept command) {
+        this.receiverName = command.getReceiverName();
+        this.receiverPhone = command.getReceiverPhone();
+        this.receiverZipcode = command.getReceiverZipcode();
+        this.receiverAddress1 = command.getReceiverAddress1();
+        this.receiverAddress2 = command.getReceiverAddress2();
+        this.etcMessage = command.getEtcMessage();
+    }
+
     @Getter
     @AllArgsConstructor
     public enum Status {
