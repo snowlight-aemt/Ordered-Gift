@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,6 +109,8 @@ class GiftServiceImplTest {
                         .build()))
                 .build();
 
+        Mockito.when(orderApiCaller.registerGiftOrder(ArgumentMatchers.any(OrderApiCommand.RegisterOrder.class)))
+                .thenReturn("test_111111111111111111111111");
         GiftInfo.Main sut = giftService.registerOrder(command);
 
         assertThat(sut.getOrderToken()).isNotEmpty();
@@ -142,8 +145,11 @@ class GiftServiceImplTest {
                     .set("giftReceiverName", Arbitraries.strings().ofMinLength(10))
                     .set("orderToken", Arbitraries.strings().ofMinLength(10))
                     .set("giftMessage", Arbitraries.strings().ofMinLength(10))
+                    .set("expiredAt", ZonedDateTime.now())
                     .setNotNull("pushType")
                 .sample();
+        gift.inPayment();
+        gift.completePayment();
         this.giftStore.store(gift);
 
         var request = fixtureMonkey.giveMeOne(GiftDto.AcceptGiftReq.class);

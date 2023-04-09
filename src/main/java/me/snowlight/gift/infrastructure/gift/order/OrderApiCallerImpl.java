@@ -27,6 +27,6 @@ public class OrderApiCallerImpl implements OrderApiCaller {
 
     @Override
     public void updateReceiverInfo(String orderToken, GiftCommand.Accept command) {
-
+        retrofitOrderApi.updateReceiverInfo(orderToken, command);
     }
 }
