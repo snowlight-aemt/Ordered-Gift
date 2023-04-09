@@ -1,11 +1,14 @@
 package me.snowlight.gift.domain.gift;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
+import com.navercorp.fixturemonkey.api.introspector.BuilderArbitraryIntrospector;
 import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
 import com.navercorp.fixturemonkey.javax.validation.plugin.JavaxValidationPlugin;
 import me.snowlight.gift.domain.gift.order.ItemInfo;
 import me.snowlight.gift.domain.gift.order.OrderApiCaller;
 import me.snowlight.gift.domain.gift.order.OrderApiCommand;
+import me.snowlight.gift.interfaces.api.gift.GiftDto;
+import me.snowlight.gift.interfaces.api.gift.GiftDtoMapper;
 import me.snowlight.gift.util.TestSpecificLanguage;
 import net.jqwik.api.Arbitraries;
 import org.assertj.core.api.Assertions;
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,11 +33,19 @@ class GiftServiceImplTest {
     private GiftService giftService;
     @Autowired
     private GiftReader giftReader;
+    @Autowired
+    private GiftStore giftStore;
+
+    @MockBean
+    public OrderApiCaller orderApiCaller;
+    @Autowired
+    public GiftDtoMapper giftDtoMapper;
 
     @Autowired
     TestSpecificLanguage testSpecificLanguage;
     private final static FixtureMonkey fixtureMonkey = FixtureMonkey.builder()
                                             .objectIntrospector(ConstructorPropertiesArbitraryIntrospector.INSTANCE)
+                                            .objectIntrospector(BuilderArbitraryIntrospector.INSTANCE)
                                             .plugin(new JavaxValidationPlugin())
                                             .build();
 
@@ -97,14 +109,14 @@ class GiftServiceImplTest {
                         .build()))
                 .build();
 
+        Mockito.when(orderApiCaller.registerGiftOrder(ArgumentMatchers.any(OrderApiCommand.RegisterOrder.class)))
+                .thenReturn("test_111111111111111111111111");
         GiftInfo.Main sut = giftService.registerOrder(command);
 
         assertThat(sut.getOrderToken()).isNotEmpty();
     }
 
-    @MockBean
-    public OrderApiCaller orderApiCaller;
-
+    @DisplayName("선물 주문 결제 상태를 결제 중 상태로 변경")
     @Test
     void requestPaymentProcessing() {
         Mockito.when(orderApiCaller.registerGiftOrder(ArgumentMatchers.any(OrderApiCommand.RegisterOrder.class)))
@@ -122,5 +134,36 @@ class GiftServiceImplTest {
         Gift sut = this.giftReader.getGiftByGiftToken(giftInfo.getGiftToken());
 
         Assertions.assertThat(sut.getStatus()).isEqualTo(Gift.Status.IN_PAYMENT);
+    }
+
+    @DisplayName("선물 주문 수락")
+    @Test
+    void acceptGift() {
+        Gift gift = fixtureMonkey.giveMeBuilder(Gift.class)
+                    .set("buyerUserId", Arbitraries.longs().between(10, 20))
+                    .set("giftReceiverPhone", Arbitraries.strings().ofMinLength(10))
+                    .set("giftReceiverName", Arbitraries.strings().ofMinLength(10))
+                    .set("orderToken", Arbitraries.strings().ofMinLength(10))
+                    .set("giftMessage", Arbitraries.strings().ofMinLength(10))
+                    .set("expiredAt", ZonedDateTime.now())
+                    .setNotNull("pushType")
+                .sample();
+        gift.inPayment();
+        gift.completePayment();
+        this.giftStore.store(gift);
+
+        var request = fixtureMonkey.giveMeOne(GiftDto.AcceptGiftReq.class);
+        GiftCommand.Accept command = this.giftDtoMapper.of(gift.getGiftToken(), request);
+        giftService.acceptGift(command);
+        Mockito.verify(orderApiCaller, Mockito.atLeast(1))
+                .updateReceiverInfo(ArgumentMatchers.anyString(), ArgumentMatchers.any());
+
+        Gift sut = this.giftReader.getGiftByGiftToken(gift.getGiftToken());
+        Assertions.assertThat(sut.getReceiverName()).isEqualTo(command.getReceiverName());
+        Assertions.assertThat(sut.getReceiverPhone()).isEqualTo(command.getReceiverPhone());
+        Assertions.assertThat(sut.getReceiverZipcode()).isEqualTo(command.getReceiverZipcode());
+        Assertions.assertThat(sut.getReceiverAddress1()).isEqualTo(command.getReceiverAddress1());
+        Assertions.assertThat(sut.getReceiverAddress2()).isEqualTo(command.getReceiverAddress2());
+        Assertions.assertThat(sut.getEtcMessage()).isEqualTo(command.getEtcMessage());
     }
 }

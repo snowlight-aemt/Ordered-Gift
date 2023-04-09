@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import me.snowlight.gift.common.exception.IllegalStatusException;
+import me.snowlight.gift.common.exception.InvalidParamException;
 import me.snowlight.gift.common.util.TokenGenerator;
 import me.snowlight.gift.domain.AbstractEntity;
 import org.apache.commons.lang3.StringUtils;
@@ -68,6 +70,7 @@ public class Gift extends AbstractEntity {
 
         this.giftToken = TokenGenerator.randomCharacterWithPrefix(GIFT_PREFIX);
         this.status = Status.INIT;
+        this.expiredAt = ZonedDateTime.now().plusDays(7);
     }
 
     public void completePayment() {
@@ -77,6 +80,33 @@ public class Gift extends AbstractEntity {
     public void inPayment() {
         this.status = Status.IN_PAYMENT;
     }
+
+    public void accept(GiftCommand.Accept command) {
+        if (!availableAccept()) throw new IllegalStatusException();
+        if (StringUtils.isEmpty(command.getReceiverName())) throw new InvalidParamException("Gift accept receiverName is empty");
+        if (StringUtils.isEmpty(command.getReceiverPhone())) throw new InvalidParamException("Gift accept receiverPhone is empty");
+        if (StringUtils.isEmpty(command.getReceiverZipcode())) throw new InvalidParamException("Gift accept receiverZipcode is empty");
+        if (StringUtils.isEmpty(command.getReceiverAddress1())) throw new InvalidParamException("Gift accept receiverAddress1 is empty");
+        if (StringUtils.isEmpty(command.getReceiverAddress2())) throw new InvalidParamException("Gift accept receiverAddress2 is empty");
+        if (StringUtils.isEmpty(command.getEtcMessage())) throw new InvalidParamException("Gift accept etcMessage is empty");
+
+        this.status = Status.ACCEPT;
+        this.receiverName = command.getReceiverName();
+        this.receiverPhone = command.getReceiverPhone();
+        this.receiverZipcode = command.getReceiverZipcode();
+        this.receiverAddress1 = command.getReceiverAddress1();
+        this.receiverAddress2 = command.getReceiverAddress2();
+        this.etcMessage = command.getEtcMessage();
+        this.acceptedAt = ZonedDateTime.now();
+    }
+
+    private boolean availableAccept() {
+        if (this.expiredAt.isBefore(ZonedDateTime.now()))
+            return false;
+
+        return this.status == Status.ORDER_COMPLETE;
+    }
+
 
     @Getter
     @AllArgsConstructor

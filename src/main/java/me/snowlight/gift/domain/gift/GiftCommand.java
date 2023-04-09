@@ -64,4 +64,17 @@ public class GiftCommand {
         private final String itemOptionName;
         private final Long itemOptionPrice;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class Accept {
+        private String giftToken;
+        private String receiverName;
+        private String receiverPhone;
+        private String receiverZipcode;
+        private String receiverAddress1;
+        private String receiverAddress2;
+        private String etcMessage;
+    }
 }

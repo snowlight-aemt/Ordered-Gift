@@ -7,4 +7,6 @@ public interface GiftService {
     void requestPaymentProcessing(String giftToken);
 
     public GiftInfo.Main retrieveOrder(String giftToken);
+
+    void acceptGift(GiftCommand.Accept command);
 }
