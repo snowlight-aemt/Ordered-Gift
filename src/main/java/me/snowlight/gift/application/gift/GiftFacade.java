@@ -22,4 +22,8 @@ public class GiftFacade {
     public void requestPaymentProcessing(String giftToken) {
         this.giftService.requestPaymentProcessing(giftToken);
     }
+
+    public GiftInfo.Main retrieveOrder(String giftToken) {
+        return this.giftService.retrieveOrder(giftToken);
+    }
 }

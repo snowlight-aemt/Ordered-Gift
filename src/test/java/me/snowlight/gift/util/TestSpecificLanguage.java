@@ -7,7 +7,9 @@ import me.snowlight.gift.common.response.CommonResponse;
 import me.snowlight.gift.domain.gift.order.ItemDto;
 import me.snowlight.gift.domain.gift.order.ItemInfo;
 import me.snowlight.gift.domain.gift.order.PartnerDto;
+import me.snowlight.gift.interfaces.api.gift.GiftDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -16,8 +18,10 @@ import java.util.Map;
 
 @Component
 public class TestSpecificLanguage {
-    public static final String ITEM_REQUEST_URL = "http://localhost:8080/api/v1/items";
-    public static final String PARTNER_REQUEST_URL = "http://localhost:8080/api/v1/partners";
+    @Value("${gift.order.base-url}")
+    public String orderUrl;
+    public static final String ITEM_REQUEST_URL = "/api/v1/items";
+    public static final String PARTNER_REQUEST_URL = "/api/v1/partners";
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -26,7 +30,7 @@ public class TestSpecificLanguage {
 
 
     public ItemInfo.Main requestRetrieveItem(String itemToken) throws JsonProcessingException {
-        ResponseEntity<String> itemRetrieveRequest = restTemplate.getForEntity(ITEM_REQUEST_URL + "/" + itemToken, String.class);
+        ResponseEntity<String> itemRetrieveRequest = restTemplate.getForEntity(orderUrl + ITEM_REQUEST_URL + "/" + itemToken, String.class);
 
         JavaType javaType = objectMapper.getTypeFactory().constructParametricType(CommonResponse.class, ItemInfo.Main.class);
         CommonResponse<ItemInfo.Main> itemRetrieveResponse = objectMapper.readValue(itemRetrieveRequest.getBody(), javaType);
@@ -41,7 +45,7 @@ public class TestSpecificLanguage {
 
         item.setPartnerToken(partnerToken);
         HttpEntity<String> itemEntity = new HttpEntity<>(this.objectMapper.writeValueAsString(item), header);
-        ResponseEntity<String> itemRegisterRequest = restTemplate.exchange(ITEM_REQUEST_URL,
+        ResponseEntity<String> itemRegisterRequest = restTemplate.exchange(orderUrl + ITEM_REQUEST_URL,
                 HttpMethod.POST,
                 itemEntity,
                 String.class);
@@ -56,7 +60,7 @@ public class TestSpecificLanguage {
 
         PartnerDto.RegisterPartner partner = new PartnerDto.RegisterPartner();
         HttpEntity<String> partnerEntity = new HttpEntity<>(this.objectMapper.writeValueAsString(partner), header);
-        ResponseEntity<String> partnerRegisterResponseEntity = restTemplate.exchange(PARTNER_REQUEST_URL,
+        ResponseEntity<String> partnerRegisterResponseEntity = restTemplate.exchange(orderUrl + PARTNER_REQUEST_URL,
                 HttpMethod.POST,
                 partnerEntity,
                 String.class);
@@ -73,6 +77,18 @@ public class TestSpecificLanguage {
 
         HttpEntity<String> partnerEntity = new HttpEntity<>(this.objectMapper.writeValueAsString(statusItemRequest), header);
 
-        restTemplate.exchange(ITEM_REQUEST_URL + "/change-on-sales", HttpMethod.POST, partnerEntity, String.class);
+        restTemplate.exchange(orderUrl + ITEM_REQUEST_URL + "/change-on-sales", HttpMethod.POST, partnerEntity, String.class);
+    }
+
+
+    public CommonResponse<GiftDto.RegisterResponse> requestRegisterGiftOrder(GiftDto.RegisterGift registerGift) throws JsonProcessingException {
+        String registerURL = "/api/v1/gifts";
+        ResponseEntity<String> registerResponse = restTemplate.postForEntity(registerURL, registerGift, String.class);
+        JavaType javaType = objectMapper.getTypeFactory().constructParametricType(
+                CommonResponse.class,
+                GiftDto.RegisterResponse.class);
+        CommonResponse<GiftDto.RegisterResponse> response =
+                objectMapper.readValue(registerResponse.getBody(), javaType);
+        return response;
     }
 }
