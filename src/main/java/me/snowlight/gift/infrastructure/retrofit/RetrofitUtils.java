@@ -26,4 +26,12 @@ public class RetrofitUtils {
             throw new RuntimeException("retrofit execute IOException");
         }
     }
+
+    public void responseVoid(Call<Void> call) {
+        try {
+            if (!call.execute().isSuccessful()) throw new RuntimeException();
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
+    }
 }
