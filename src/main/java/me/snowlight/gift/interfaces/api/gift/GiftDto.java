@@ -34,6 +34,8 @@ public class GiftDto {
     @Builder
     public static class RegisterOrderItem {
         @NotNull
+        @Min(1)
+        @Max(127)
         private final Integer orderCount;
         @NotEmpty
         private final String itemToken;
@@ -95,12 +97,13 @@ public class GiftDto {
     @Getter
     @Builder
     public static class AcceptGiftReq {
-        @Min(0)
         @NotNull
+        @NotEmpty
         private String receiverName;
         @NotEmpty
         private String receiverPhone;
         @NotEmpty
+        @Size(min = 1, max = 9)
         private String receiverZipcode;
         @NotEmpty
         private String receiverAddress1;

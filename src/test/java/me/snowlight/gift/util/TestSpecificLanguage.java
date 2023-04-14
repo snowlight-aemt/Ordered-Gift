@@ -80,7 +80,6 @@ public class TestSpecificLanguage {
         restTemplate.exchange(orderUrl + ITEM_REQUEST_URL + "/change-on-sales", HttpMethod.POST, partnerEntity, String.class);
     }
 
-
     public CommonResponse<GiftDto.RegisterResponse> requestRegisterGiftOrder(GiftDto.RegisterGift registerGift) throws JsonProcessingException {
         String registerURL = "/api/v1/gifts";
         ResponseEntity<String> registerResponse = restTemplate.postForEntity(registerURL, registerGift, String.class);
@@ -90,5 +89,11 @@ public class TestSpecificLanguage {
         CommonResponse<GiftDto.RegisterResponse> response =
                 objectMapper.readValue(registerResponse.getBody(), javaType);
         return response;
+    }
+
+    public CommonResponse requestPaymentProcessing(String giftToken) throws JsonProcessingException {
+        String registerURL = "/api/v1/gifts/" + giftToken + "/payment-processing";
+        ResponseEntity<String> registerResponse = restTemplate.postForEntity(registerURL, null, String.class);
+        return objectMapper.readValue(registerResponse.getBody(), CommonResponse.class);
     }
 }
