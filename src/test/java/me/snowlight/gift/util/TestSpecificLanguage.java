@@ -6,11 +6,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import me.snowlight.gift.common.response.CommonResponse;
 import me.snowlight.gift.domain.gift.order.ItemDto;
 import me.snowlight.gift.domain.gift.order.ItemInfo;
+import me.snowlight.gift.domain.gift.order.OrderDto;
 import me.snowlight.gift.domain.gift.order.PartnerDto;
 import me.snowlight.gift.interfaces.api.gift.GiftDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 
@@ -95,5 +97,22 @@ public class TestSpecificLanguage {
         String registerURL = "/api/v1/gifts/" + giftToken + "/payment-processing";
         ResponseEntity<String> registerResponse = restTemplate.postForEntity(registerURL, null, String.class);
         return objectMapper.readValue(registerResponse.getBody(), CommonResponse.class);
+    }
+
+    public void requestPaymentOrder(String orderToken, Long amount, String payMethod) {
+        me.snowlight.gift.domain.gift.GiftDto.PaymentRequest paymentRequest =
+                me.snowlight.gift.domain.gift.GiftDto.PaymentRequest.builder()
+                        .orderToken(orderToken)
+                        .payMethod(payMethod)
+                        .amount(amount)
+                        .orderDescription("TEST")
+                        .build();
+        restTemplate.postForEntity("http://localhost:28080/api/v1/gift-orders/payment-order", paymentRequest, String.class);
+    }
+
+    public CommonResponse<OrderDto.Main> requestRetrieveOrder(String orderToken) {
+        ParameterizedTypeReference<CommonResponse<OrderDto.Main>> parameterizedTypeReference = new ParameterizedTypeReference<>() {};
+        ResponseEntity<CommonResponse<OrderDto.Main>> orderResponse = restTemplate.exchange("http://localhost:28080/api/v1/orders/" + orderToken, HttpMethod.GET, null, parameterizedTypeReference);
+        return orderResponse.getBody();
     }
 }
