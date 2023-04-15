@@ -1,10 +1,9 @@
 package me.snowlight.gift.interfaces.message;
 
+import io.awspring.cloud.sqs.annotation.SqsListener;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.snowlight.gift.application.gift.GiftFacade;
-import org.springframework.cloud.aws.messaging.listener.SqsMessageDeletionPolicy;
-import org.springframework.cloud.aws.messaging.listener.annotation.SqsListener;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class GiftSqsMessageListener {
     private final GiftFacade giftFacade;
 
-    @SqsListener(value = "order-payComplete.fifo", deletionPolicy = SqsMessageDeletionPolicy.ON_SUCCESS)
+    @SqsListener(value = "order-payComplete.fifo")
     public void readMessage(GiftPaymentCompleteMessage message) {
         String orderToken = message.getOrderToken();
         giftFacade.completePayment(orderToken);

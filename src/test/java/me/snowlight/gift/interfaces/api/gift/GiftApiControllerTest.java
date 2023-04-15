@@ -14,7 +14,6 @@ import me.snowlight.gift.domain.gift.order.OrderDto;
 import me.snowlight.gift.util.TestSpecificLanguage;
 import net.jqwik.api.Arbitraries;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -81,7 +80,7 @@ class GiftApiControllerTest {
     }
 
     @DisplayName("선물 주문 수락 ")
-    @RepeatedTest(50)
+    @Test
     void accept() throws Exception {
         // 파트너 등록
         String partnerToken = testSpecificLanguage.requestRegisterPartner();

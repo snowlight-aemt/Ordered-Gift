@@ -39,14 +39,9 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    testCompileOnly 'org.projectlombok:lombok'
-    testAnnotationProcessor 'org.projectlombok:lombok'
 
     implementation 'org.mapstruct:mapstruct:1.4.2.Final'
     annotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
-
-    testImplementation 'org.mapstruct:mapstruct:1.4.2.Final'
-    testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
 
     // retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -54,20 +49,26 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11'
 
     // aws sqs
-    // TODO springframework -> awspringframework
     implementation platform('software.amazon.awssdk:bom:2.15.0')
-    implementation 'org.springframework.cloud:spring-cloud-aws-messaging:2.2.1.RELEASE'
-    implementation 'org.springframework:spring-messaging:5.3.24'
+    implementation 'io.awspring.cloud:spring-cloud-aws-starter-sqs:3.0.0-RC1'
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
-//    runtimeOnly 'mysql:mysql-connector-java'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.mapstruct:mapstruct:1.4.2.Final'
+    testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
+
+    // fixture monkey
     testImplementation("com.navercorp.fixturemonkey:fixture-monkey-starter:0.5.2")
     testImplementation("com.navercorp.fixturemonkey:fixture-monkey-jakarta-validation:0.5.2")
     testImplementation 'org.awaitility:awaitility:4.2.0'
+
+//    runtimeOnly 'com.h2database:h2'
 }
 
 dependencyManagement {
