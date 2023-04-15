@@ -1,5 +1,6 @@
 package me.snowlight.gift.domain.gift;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +11,6 @@ import me.snowlight.gift.common.util.TokenGenerator;
 import me.snowlight.gift.domain.AbstractEntity;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.persistence.*;
 import java.time.ZonedDateTime;
 
 @Getter

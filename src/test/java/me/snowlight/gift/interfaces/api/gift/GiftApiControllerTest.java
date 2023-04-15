@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.navercorp.fixturemonkey.api.introspector.BuilderArbitraryIntrospector;
 import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
-import com.navercorp.fixturemonkey.javax.validation.plugin.JavaxValidationPlugin;
+import com.navercorp.fixturemonkey.jakarta.validation.plugin.JakartaValidationPlugin;
 import me.snowlight.gift.application.gift.GiftFacade;
 import me.snowlight.gift.common.response.CommonResponse;
 import me.snowlight.gift.domain.gift.Gift;
@@ -54,7 +54,7 @@ class GiftApiControllerTest {
     private final static FixtureMonkey fixtureMonkey = FixtureMonkey.builder()
             .objectIntrospector(ConstructorPropertiesArbitraryIntrospector.INSTANCE)
             .objectIntrospector(BuilderArbitraryIntrospector.INSTANCE)
-            .plugin(new JavaxValidationPlugin())
+            .plugin(new JakartaValidationPlugin())
             .build();
 
     @DisplayName("선물 주문 상태를 결재 중으로 변경")

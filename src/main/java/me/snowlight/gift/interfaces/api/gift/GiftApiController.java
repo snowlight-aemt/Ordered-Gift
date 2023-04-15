@@ -1,13 +1,12 @@
 package me.snowlight.gift.interfaces.api.gift;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.snowlight.gift.application.gift.GiftFacade;
 import me.snowlight.gift.common.response.CommonResponse;
 import me.snowlight.gift.domain.gift.GiftCommand;
 import me.snowlight.gift.domain.gift.GiftInfo;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/gifts")

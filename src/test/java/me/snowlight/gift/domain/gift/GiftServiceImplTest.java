@@ -3,7 +3,7 @@ package me.snowlight.gift.domain.gift;
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.navercorp.fixturemonkey.api.introspector.BuilderArbitraryIntrospector;
 import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
-import com.navercorp.fixturemonkey.javax.validation.plugin.JavaxValidationPlugin;
+import com.navercorp.fixturemonkey.jakarta.validation.plugin.JakartaValidationPlugin;
 import me.snowlight.gift.domain.gift.order.ItemInfo;
 import me.snowlight.gift.domain.gift.order.OrderApiCaller;
 import me.snowlight.gift.domain.gift.order.OrderApiCommand;
@@ -46,7 +46,7 @@ class GiftServiceImplTest {
     private final static FixtureMonkey fixtureMonkey = FixtureMonkey.builder()
                                             .objectIntrospector(ConstructorPropertiesArbitraryIntrospector.INSTANCE)
                                             .objectIntrospector(BuilderArbitraryIntrospector.INSTANCE)
-                                            .plugin(new JavaxValidationPlugin())
+                                            .plugin(new JakartaValidationPlugin())
                                             .build();
 
     @DisplayName("상품 등록")

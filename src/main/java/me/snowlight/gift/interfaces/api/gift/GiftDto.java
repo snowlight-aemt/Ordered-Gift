@@ -1,13 +1,17 @@
 package me.snowlight.gift.interfaces.api.gift;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.snowlight.gift.domain.gift.Gift;
 import me.snowlight.gift.domain.gift.GiftInfo;
+import org.jetbrains.annotations.NotNull;
 
-import javax.validation.constraints.*;
 import java.util.List;
 
 public class GiftDto {
@@ -33,7 +37,7 @@ public class GiftDto {
     @Getter
     @Builder
     public static class RegisterOrderItem {
-        @NotNull
+//        @NotNull
         @Min(1)
         @Max(127)
         private final Integer orderCount;
@@ -97,7 +101,6 @@ public class GiftDto {
     @Getter
     @Builder
     public static class AcceptGiftReq {
-        @NotNull
         @NotEmpty
         private String receiverName;
         @NotEmpty

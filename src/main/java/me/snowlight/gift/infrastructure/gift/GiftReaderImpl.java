@@ -1,12 +1,12 @@
 package me.snowlight.gift.infrastructure.gift;
 
 import lombok.RequiredArgsConstructor;
+import me.snowlight.gift.common.exception.EntityNotFoundException;
 import me.snowlight.gift.domain.gift.Gift;
 import me.snowlight.gift.domain.gift.GiftReader;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityNotFoundException;
 import java.security.InvalidParameterException;
 
 @Component
