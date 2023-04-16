@@ -51,6 +51,9 @@ dependencies {
     // aws sqs
     implementation 'io.awspring.cloud:spring-cloud-aws-starter-sqs:3.0.0-RC1'
 
+    // Swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.mysql:mysql-connector-j'
 
